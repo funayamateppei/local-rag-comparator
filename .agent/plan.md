@@ -11,7 +11,7 @@ t-wada氏の提唱するTDD（テスト駆動開発：Red-Green-Refactor）を�
   - `Makefile` を起点とし、`make setup` でAIモデルのPullからコンテナビルドまで一括完了。
   - `make up` 実行時にMacホスト上のOllamaの生存確認と自動バックグラウンド起動を行う。
 - **Host (Mac Native - GPU活用)**:
-  - Ollama (LLM: qwen2.5:14b / Embedding: avr/sfr-embedding-mistral:f16)
+  - Ollama (LLM: qwen2.5:14b / Embedding: bge-m3)
 - **Docker Compose Network**:
   - **backend**: FastAPI, GraphRAG CLI連携, PyMuPDF (Python 3.11)
   - **frontend**: React + Vite + react-force-graph (Node.js)
