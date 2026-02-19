@@ -72,6 +72,13 @@ graph LR
 - macOS (Apple Silicon M1/M2/M3/M4) ※推奨メモリ: 24GB以上
 - [Homebrew](https://brew.sh/ja/)
 - [Docker Desktop for Mac](https://www.docker.com/products/docker-desktop/)
+- [Ollama](https://ollama.com/)（ホストへの事前インストールが必要）
+- Python 3.11+（venv 用）
+- Node.js 22（`.node-version` で指定。[mise](https://mise.jdx.dev/) での管理を推奨）
+  ```bash
+  # .node-version を mise で自動認識させる設定（初回のみ）
+  mise settings add idiomatic_version_file_enable_tools node
+  ```
 
 ## 🚀 クイックスタート (Getting Started)
 
@@ -79,59 +86,83 @@ graph LR
 
 ### 1. セットアップ（初回のみ）
 
-Ollamaのインストール確認、LLMモデルのダウンロード（数GB）、Dockerイメージのビルドを一括で行います。
+Ollama モデルのダウンロード（約10GB）・Python venv の作成・npm install・Docker イメージのビルドを一括で行います。
 
 ```bash
 make setup
 ```
 
+完了後、Python venv を有効化します（IDE の補完・ローカルテスト用）：
+
+```bash
+source backend/.venv/bin/activate
+```
+
 ### 2. アプリケーションの起動
 
-バックグラウンドでのOllamaの起動確認を行い、Dockerコンテナ群を立ち上げます。
+Ollama の起動確認後、Docker コンテナ群をバックグラウンドで立ち上げます。
 
 ```bash
 make up
 ```
 
-起動後、以下のURLにアクセスしてください：
+起動後、以下の URL にアクセスしてください：
 
-- Frontend (UI): http://localhost:5173
-- Backend API Docs: http://localhost:8000/docs
+| サービス | URL |
+|---|---|
+| Frontend (UI) | <http://localhost:5173> |
+| Backend API Docs | <http://localhost:8000/docs> |
+| ChromaDB | <http://localhost:8001> |
 
-### 3. 終了とクリーンアップ
+### 3. 終了
 
 ```bash
 make down
 ```
 
-## 🧪 テストの実行 (TDD)
+## 🛠️ Makefile コマンド一覧
 
-バックエンド（FastAPI）のテストを実行します。Dockerコンテナ内で `pytest` が走ります。
-
-```bash
-make test-backend
-```
+| コマンド | 説明 |
+|---|---|
+| `make setup` | 初回セットアップ（Ollama Pull + venv + npm install + Docker build） |
+| `make up` | 全コンテナをバックグラウンド起動 |
+| `make down` | 全コンテナを停止 |
+| `make build` | Docker イメージのみビルド |
+| `make test-backend` | バックエンドの pytest を実行 |
+| `make logs` | 全サービスのログをストリーム表示 |
 
 ## 📂 ディレクトリ構成
 
 ```txt
 /
- ├── Makefile             # 開発用コマンド集
- ├── docker-compose.yml   # コンテナ構成
- ├── backend/             # クリーンアーキテクチャ準拠のPython API
+ ├── .node-version        # Node.js バージョン管理（唯一の管理箇所）
+ ├── .gitignore
+ ├── Makefile             # 開発用コマンド集（setup / up / down / test-backend 等）
+ ├── docker-compose.yml   # コンテナ構成（backend / frontend / vectordb）
+ ├── backend/
+ │    ├── Dockerfile
+ │    ├── requirements.txt      # Docker 用の全依存パッケージ
+ │    ├── requirements-dev.txt  # ローカル venv 用（pytest / fastapi 等）
  │    ├── src/
- │    │    ├── domain/         # エンティティ・インターフェース
- │    │    ├── application/    # ユースケース
- │    │    ├── infrastructure/ # ChromaDB, GraphRAGCLI などの実装
- │    │    └── interfaces/     # FastAPI Router
- │    └── tests/          # pytest
- └── frontend/            # React (Vite) + グラフ可視化 UI
+ │    │    ├── main.py
+ │    │    ├── domain/          # エンティティ・インターフェース
+ │    │    ├── application/     # ユースケース
+ │    │    ├── infrastructure/  # ChromaDB, GraphRAG CLI などの実装
+ │    │    ├── interfaces/      # FastAPI Router
+ │    │    └── core/            # 設定・DI・プロンプト管理
+ │    └── tests/
+ │         ├── unit/            # ドメイン・アプリケーション層の高速テスト
+ │         └── integration/     # インフラ・インターフェース層の結合テスト
+ └── frontend/                  # React (Vite + TypeScript)
+      ├── Dockerfile             # ARG NODE_VERSION で .node-version から受け取る
+      └── src/
 ```
 
 ## 📝 参考文献 & クレジット
 
-- Microsoft GraphRAG Repository[https://github.com/microsoft/graphrag]
-- Ollama[https://ollama.com/]
+- [Microsoft GraphRAG](https://github.com/microsoft/graphrag)
+- [Ollama](https://ollama.com/)
+- [ChromaDB](https://www.trychroma.com/)
 
 ## 📄 ライセンス
 
