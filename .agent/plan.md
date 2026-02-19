@@ -22,6 +22,33 @@ t-wada氏の提唱するTDD（テスト駆動開発：Red-Green-Refactor）を�
 - **Testing Frameworks**:
   - Backend: pytest, pytest-mock, pytest-asyncio
   - Frontend: Vitest, React Testing Library, MSW (APIモック)
+- **Infrastructure Strategy**:
+  - **Prompt Management**: プロンプトをハードコードせず、外部定義ファイルまたは環境変数から注入可能にし、パース時や検索時の振る舞いを柔軟に変更可能とする。
+  - **Cloud Ready Design**: 実運用を想定し、ファイルシステムを抽象化。ローカルストレージだけでなく、S3/GCS等のオブジェクトストレージへのファイル配置をトリガーとしたイベント駆動型処理への移行を考慮した設計とする。
+
+```mermaid
+graph TB
+    subgraph Data_Ingestion_Subsystem [Data Ingestion Subsystem]
+        A[Data Files] --> B(Local Storage / Watchdog)
+        B -- "Message (File Event)" --> C{Event Dispatcher}
+        C -- "Trigger" --> D[File Processor / Parser]
+        D -- "Custom Prompt" --> LLM_Parse[Ollama: qwen2.5]
+        LLM_Parse -- "Extract Entities" --> D
+        D -- "Create Embeddings" --> EMB[Ollama: bge-m3]
+        EMB -- "Vector Data" --> H[(ChromaDB: Vector)]
+        D -- "Construct Graph" --> E[(GraphRAG: Knowledge Graph)]
+    end
+
+    subgraph Serving_Subsystem [Serving Subsystem]
+        U[Application User] -- 1. Request --> AG[RAG Agent / FastAPI]
+        AG -- 2a. Create Query Embeddings --> EMB
+        AG -- 2b. Perform Vector Search --> H
+        AG -- 2c. Retrieve Graph Data --> E
+        AG -- 2d. Augment Prompt --> AG
+        AG -- 2e. Summarize Results --> LLM_Gen[Ollama: qwen2.5]
+        LLM_Gen -- 3. Response --> U
+    end
+```
 
 ## 3. ディレクトリ構成
 
@@ -37,7 +64,7 @@ t-wada氏の提唱するTDD（テスト駆動開発：Red-Green-Refactor）を�
  │    │    ├── application/       # UseCases
  │    │    ├── infrastructure/    # ChromaDB, GraphRAG, PyMuPDF
  │    │    ├── interfaces/        # FastAPI Routers
- │    │    ├── core/              # DI, Settings
+ │    │    ├── core/              # Prompts (YAML/JSON), DI, Settings
  │    │    └── main.py
  │    └── tests/                  # pytest (TDDの主戦場)
  │         ├── unit/              # Domain, Application層の高速テスト
@@ -62,16 +89,19 @@ t-wada氏の提唱するTDD（テスト駆動開発：Red-Green-Refactor）を�
 
 ### Phase 2: ドメイン層 & アプリケーション層の実装 (TDD実践)
 
-- [ ] 【Red】Domain: Document, QueryResult, GraphData の振る舞いに対するテストを `tests/unit/` に記述
-- [ ] 【Green-Refactor】Domain: エンティティとインターフェース (IDocumentParser 等) の実装
-- [ ] 【Red】Application: モック (pytest-mock) を使用した UploadDocumentUseCase, CompareRAGUseCase のテストを記述
-- [ ] 【Green-Refactor】Application: ユースケースのビジネスロジック実装
+- [ ] 【Red-Green】Domain: Prompt & Template モデルの実装。パース用（Entity Extraction）や検索用のプロンプトを外部YAMLから注入・バリデーションするテストを `tests/unit/` に記述
+- [ ] 【Red】Domain: Document, QueryResult, GraphData の振る舞いに対するテストを記述（ステータス管理や非同期イベント `DocumentUploadedEvent` を含む）
+- [ ] 【Red】Application: モック (pytest-mock) を使用した DocumentProcessorUseCase のテストを記述（受信→プロンプト取得→パース→保存のパイプライン）
+- [ ] 【Green-Refactor】Application: EventDispatcher インターフェースを介した非同期処理のオーケストレーションとユースケースのビジネスロジック実装
+- [ ] 【Green-Refactor】Application: CompareRAGUseCase（VectorとGraphの並列検索・結果集約）の実装
 
 ### Phase 3: インフラストラクチャ層の実装 (外部結合)
 
-- [ ] 【Red-Green】PyMuPDF を用いた IDocumentParser 実装と統合テスト
-- [ ] 【Red-Green】ChromaDB と通信する IVectorRepository 実装と統合テスト
-- [ ] 【Red-Green】IGraphRepository 実装 (host.docker.internal:11434 を向く settings.yaml 動的生成とCLIラッパー)
+- [ ] 【Red-Green】Infrastructure: FileSystemWatcher / StorageObserver の実装（watchdogを使用し、特定ディレクトリへのファイル配置を検知してEventDispatcherへ通知）
+- [ ] 【Red-Green】LLM-based Parser & Prompt Loader 実装（PyMuPDFで抽出したテキストと外部YAMLプロンプト、qwen2.5を組み合わせた構造化抽出）
+- [ ] 【Red-Green】ChromaDB と通信する IVectorRepository 実装と統合テスト（bge-m3モデルを使用した埋め込み生成）
+- [ ] 【Red-Green】IGraphRepository 実装 (host.docker.internal:11434 を向く settings.yaml 動的生成、CLIラッパー、およびParquet解析)
+- [ ] 【Red-Green】Integration Test: ファイル投入からVector/Graph両DBへのデータ永続化までを網羅するEnd-to-Endパイプラインテスト
 
 ### Phase 4: インターフェース層 (FastAPI) と Swagger / DI
 
