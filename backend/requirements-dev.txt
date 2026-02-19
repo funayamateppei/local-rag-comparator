@@ -1,0 +1,9 @@
+# ローカル開発・テスト用パッケージ（Docker 不要のもの）
+# graphrag 等 Docker 専用パッケージは requirements.txt にのみ記載
+fastapi>=0.110.0
+uvicorn[standard]>=0.29.0
+pytest>=8.0.0
+pytest-asyncio>=0.23.0
+pytest-mock>=3.14.0
+httpx>=0.27.0
+pyyaml>=6.0.0

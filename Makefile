@@ -11,9 +11,9 @@ setup: check-ollama
 	done
 	@echo "==> Python venv を作成中..."
 	python3 -m venv backend/.venv
-	@echo "==> venv に依存パッケージをインストール中..."
+	@echo "==> venv に開発用パッケージをインストール中..."
 	backend/.venv/bin/pip install --upgrade pip
-	backend/.venv/bin/pip install -r backend/requirements.txt
+	backend/.venv/bin/pip install -r backend/requirements-dev.txt
 	@echo "==> フロントエンドの依存パッケージをインストール中..."
 	cd frontend && npm install
 	@echo "==> Docker イメージをビルド中..."
