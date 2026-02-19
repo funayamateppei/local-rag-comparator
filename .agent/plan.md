@@ -16,6 +16,7 @@ t-wada氏の提唱するTDD（テスト駆動開発：Red-Green-Refactor）を�
   - Frontend: Vitest, React Testing Library, MSW (APIモック)
 
 ## 3. ディレクトリ構成
+```txt
 / (root)
  ├── docker-compose.yml
  ├── backend/
@@ -36,6 +37,7 @@ t-wada氏の提唱するTDD（テスト駆動開発：Red-Green-Refactor）を�
       ├── package.json
       ├── src/
       └── tests/                  # Vitest (コンポーネントテスト)
+```
 
 ## 4. 実装フェーズ (TDDサイクル: Red -> Green -> Refactor)
 
