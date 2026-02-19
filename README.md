@@ -1,7 +1,5 @@
 # Local RAG Comparator (GraphRAG vs Vector RAG)
 
-
-
 完全ローカル環境（Mac Apple Silicon）で動作する、「通常のVector RAG」と「Microsoft GraphRAG」の比較・検証プラットフォームです。
 外部API（OpenAIなど）に一切依存せず、プライバシーを保ったまま高度なRAGの精度比較を行うことができます。
 
@@ -17,29 +15,80 @@
 
 ## 🏗️ アーキテクチャ
 
-* **Host (Mac Native)**: Ollama (`qwen2.5:14b`, `avr/sfr-embedding-mistral:f16`)
-* **Backend (Docker)**: Python 3.11, FastAPI, Microsoft GraphRAG, PyMuPDF, pytest
-* **Frontend (Docker)**: Node.js, React (Vite + TypeScript), react-force-graph, Vitest
-* **Database (Docker)**: ChromaDB (Vector Search)
+本プロジェクトは、MacのGPUリソースを最大限に活用しつつ、アプリケーションのポータビリティを維持するため、Native & Docker ハイブリッド構成を採用しています。
+
+```mermaid
+graph LR
+    subgraph Left [File System & Observer]
+        Input[("/backend/storage/input")]
+        Watcher["Watchdog<br/>(LocalFileSystemObserver)"]
+        Input -.->|File Created| Watcher
+    end
+
+    subgraph Center [Host: Ollama / GPU]
+        LLM["LLM: qwen2.5:14b"]
+        EMB["Embedding: bge-m3"]
+    end
+
+    subgraph TopRight [User Interface]
+        FE["Frontend<br/>(React + react-force-graph)"]
+    end
+
+    subgraph BottomRight [Backend & DB]
+        BE["Backend API<br/>(FastAPI)"]
+        VDB[("ChromaDB<br/>(Vector)")]
+        GDB[("Parquet Files<br/>(Graph Artifacts)")]
+    end
+
+    Watcher -->|Trigger Event| BE
+    BE <-->|Inference| LLM
+    BE <-->|Embedding| EMB
+    BE <-->|Store/Search| VDB
+    BE <-->|Analyze| GDB
+
+    FE <-->|Query / Graph Data| BE
+
+    %% 配置の調整用ダミー（Mermaidのランク調整）
+    TopRight ~~~ BottomRight
+```
+
+### コンポーネント詳細 (Component Details)
+
+- **Host (Mac Native)**:
+  - **Ollama**: 推論エンジン。GPU (Metal) に直接アクセスし、`qwen2.5:14b` と `bge-m3` を高速に実行。
+- **Backend (Docker)**:
+  - **FastAPI**: クリーンアーキテクチャに基づいたAPI実装。
+  - **Event Watcher**: `watchdog` によりストレージへのファイル配置を検知し、非同期でパースを開始。
+  - **GraphRAG CLI**: Microsoft公式エンジンをコンテナ内で実行し、ナレッジグラフを構築。
+- **Frontend (Docker)**:
+  - **React**: `react-force-graph` を使用し、GraphRAGが生成した複雑なエンティティ関係を3D/2Dで可視化。
+- **Database (Docker)**:
+  - **ChromaDB**: ベクトル検索エンジン。`bge-m3` で生成されたベクトルデータを永続化。
+- **Graph Storage**: File-based (Apache Parquet)
+  - Microsoft GraphRAGの標準仕様に準拠。インデックス作成時にLLMが抽出したエンティティ・関係性をParquet形式で永続化し、検索時に高速ロードして利用。
 
 ## 📋 動作要件 (Prerequisites)
 
-* macOS (Apple Silicon M1/M2/M3/M4) ※推奨メモリ: 24GB以上
-* [Homebrew](https://brew.sh/ja/)
-* [Docker Desktop for Mac](https://www.docker.com/products/docker-desktop/)
+- macOS (Apple Silicon M1/M2/M3/M4) ※推奨メモリ: 24GB以上
+- [Homebrew](https://brew.sh/ja/)
+- [Docker Desktop for Mac](https://www.docker.com/products/docker-desktop/)
 
 ## 🚀 クイックスタート (Getting Started)
 
 開発者体験（DX）を最大化するため、環境構築から起動までを `Makefile` で完全に自動化しています。
 
 ### 1. セットアップ（初回のみ）
+
 Ollamaのインストール確認、LLMモデルのダウンロード（数GB）、Dockerイメージのビルドを一括で行います。
+
 ```bash
 make setup
 ```
 
 ### 2. アプリケーションの起動
+
 バックグラウンドでのOllamaの起動確認を行い、Dockerコンテナ群を立ち上げます。
+
 ```bash
 make up
 ```
@@ -50,6 +99,7 @@ make up
 - Backend API Docs: http://localhost:8000/docs
 
 ### 3. 終了とクリーンアップ
+
 ```bash
 make down
 ```
@@ -57,11 +107,13 @@ make down
 ## 🧪 テストの実行 (TDD)
 
 バックエンド（FastAPI）のテストを実行します。Dockerコンテナ内で `pytest` が走ります。
+
 ```bash
 make test-backend
 ```
 
 ## 📂 ディレクトリ構成
+
 ```txt
 /
  ├── Makefile             # 開発用コマンド集
@@ -74,7 +126,7 @@ make test-backend
  │    │    └── interfaces/     # FastAPI Router
  │    └── tests/          # pytest
  └── frontend/            # React (Vite) + グラフ可視化 UI
- ```
+```
 
 ## 📝 参考文献 & クレジット
 
@@ -82,4 +134,5 @@ make test-backend
 - Ollama[https://ollama.com/]
 
 ## 📄 ライセンス
+
 This project is licensed under the MIT License.
