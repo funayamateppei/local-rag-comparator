@@ -80,12 +80,12 @@ graph TB
 
 ### Phase 1: 開発基盤の構築とセットアップ自動化
 
-- [ ] バックエンドディレクトリの作成 (`backend/`) と `Dockerfile`, `requirements.txt` の配置
-- [ ] フロントエンドのVite初期化 (`npm create vite@latest frontend -- --template react-ts`) と `Dockerfile` の配置
-- [ ] ルートディレクトリに `docker-compose.yml` を作成
-- [ ] ルートディレクトリに `Makefile` を作成 (`setup`, `check-ollama`, `up`, `down`, `test-backend` コマンドを定義)
-- [ ] ターミナルで `make setup` を実行し、OllamaモデルのPullとDockerイメージのビルドを完了させる
-- [ ] ターミナルで `make up` を実行し、全環境が立ち上がるか確認する
+- [x] バックエンドディレクトリの作成 (`backend/`) と `Dockerfile`, `requirements.txt` の配置
+- [x] フロントエンドのVite初期化 (`npm create vite@latest frontend -- --template react-ts`) と `Dockerfile` の配置
+- [x] ルートディレクトリに `docker-compose.yml` を作成
+- [x] ルートディレクトリに `Makefile` を作成 (`setup`, `check-ollama`, `up`, `down`, `test-backend` コマンドを定義)
+- [x] ターミナルで `make setup` を実行し、OllamaモデルのPullとDockerイメージのビルドを完了させる
+- [x] ターミナルで `make up` を実行し、全環境が立ち上がるか確認する
 
 ### Phase 2: ドメイン層 & アプリケーション層の実装 (TDD実践)
 
