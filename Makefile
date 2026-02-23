@@ -1,7 +1,7 @@
 NODE_VERSION := $(shell cat .node-version)
 OLLAMA_MODELS  := qwen2.5:14b bge-m3
 
-.PHONY: setup check-ollama build up down test-backend logs
+.PHONY: setup check-ollama build up down test test-be test-fe test-backend logs
 
 ## すべての初期セットアップを実行する
 setup: check-ollama
@@ -54,7 +54,18 @@ up: check-ollama
 down:
 	docker compose down
 
-## バックエンドのテストを実行する
+## すべてのテストをローカル環境で実行する (make test / make test-be / make test-fe)
+test: test-be test-fe
+
+## バックエンドのテストをローカル環境で実行する
+test-be:
+	cd backend && .venv/bin/python -m pytest tests/ -v
+
+## フロントエンドのテストをローカル環境で実行する
+test-fe:
+	cd frontend && npm test
+
+## バックエンドのテストを Docker 上で実行する
 test-backend:
 	docker compose exec backend pytest tests/ -v
 
