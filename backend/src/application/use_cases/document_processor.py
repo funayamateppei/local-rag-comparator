@@ -4,21 +4,21 @@ Orchestrates the full document processing lifecycle:
 file parsing -> entity extraction -> embedding -> indexing -> event dispatch.
 """
 
+from src.application.interfaces import (
+    IEmbeddingService,
+    IEventDispatcher,
+    IFileParser,
+    ILLMService,
+)
+from src.domain.events import DocumentUploadedEvent
 from src.domain.models.document import Document
 from src.domain.models.graph_data import GraphData
 from src.domain.models.prompt import PromptType
-from src.domain.events import DocumentUploadedEvent
 from src.domain.repositories import (
     IDocumentRepository,
-    IVectorRepository,
     IGraphRepository,
     IPromptRepository,
-)
-from src.application.interfaces import (
-    IEventDispatcher,
-    ILLMService,
-    IEmbeddingService,
-    IFileParser,
+    IVectorRepository,
 )
 
 
@@ -92,9 +92,7 @@ class DocumentProcessorUseCase:
             # Step 5: Create embeddings and store in VectorDB
             chunks = self._split_text(raw_text)
             embeddings = await self._embedding_service.create_embeddings(chunks)
-            await self._vector_repo.store_embeddings(
-                document.id, chunks, embeddings
-            )
+            await self._vector_repo.store_embeddings(document.id, chunks, embeddings)
 
             # Step 6: Parse LLM response to graph data and store in GraphDB
             graph_data = self._parse_graph_data(llm_response)

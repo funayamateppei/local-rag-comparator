@@ -5,10 +5,10 @@ Supports both synchronous and asynchronous handler functions.
 """
 
 import inspect
-from typing import Callable, Type
+from collections.abc import Callable
 
-from src.domain.events import DomainEvent
 from src.application.interfaces import IEventDispatcher
+from src.domain.events import DomainEvent
 
 
 class EventDispatcher(IEventDispatcher):
@@ -19,9 +19,9 @@ class EventDispatcher(IEventDispatcher):
     """
 
     def __init__(self) -> None:
-        self._handlers: dict[Type[DomainEvent], list[Callable]] = {}
+        self._handlers: dict[type[DomainEvent], list[Callable]] = {}
 
-    def register(self, event_type: Type[DomainEvent], handler: Callable) -> None:
+    def register(self, event_type: type[DomainEvent], handler: Callable) -> None:
         """Register a handler for a specific event type.
 
         Args:
