@@ -89,11 +89,11 @@ graph TB
 
 ### Phase 2: ドメイン層 & アプリケーション層の実装 (TDD実践)
 
-- [ ] 【Red-Green】Domain: Prompt & Template モデルの実装。パース用（Entity Extraction）や検索用のプロンプトを外部YAMLから注入・バリデーションするテストを `tests/unit/` に記述
-- [ ] 【Red】Domain: Document, QueryResult, GraphData の振る舞いに対するテストを記述（ステータス管理や非同期イベント `DocumentUploadedEvent` を含む）
-- [ ] 【Red】Application: モック (pytest-mock) を使用した DocumentProcessorUseCase のテストを記述（受信→プロンプト取得→パース→保存のパイプライン）
-- [ ] 【Green-Refactor】Application: EventDispatcher インターフェースを介した非同期処理のオーケストレーションとユースケースのビジネスロジック実装
-- [ ] 【Green-Refactor】Application: CompareRAGUseCase（VectorとGraphの並列検索・結果集約）の実装
+- [x] 【Red-Green】Domain: Prompt & Template モデルの実装。パース用（Entity Extraction）や検索用のプロンプトを外部YAMLから注入・バリデーションするテストを `tests/unit/` に記述
+- [x] 【Red】Domain: Document, QueryResult, GraphData の振る舞いに対するテストを記述（ステータス管理や非同期イベント `DocumentUploadedEvent` を含む）
+- [x] 【Red】Application: モック (pytest-mock) を使用した DocumentProcessorUseCase のテストを記述（受信→プロンプト取得→パース→保存のパイプライン）
+- [x] 【Green-Refactor】Application: EventDispatcher インターフェースを介した非同期処理のオーケストレーションとユースケースのビジネスロジック実装
+- [x] 【Green-Refactor】Application: CompareRAGUseCase（VectorとGraphの並列検索・結果集約）の実装
 
 ### Phase 3: インフラストラクチャ層の実装 (外部結合)
 
