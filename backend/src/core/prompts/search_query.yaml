@@ -1,0 +1,14 @@
+name: search_query
+version: "1.0"
+variables:
+  - query
+  - context
+template: |
+  以下のコンテキストに基づいて、ユーザーのクエリに回答してください。
+
+  クエリ: {{query}}
+
+  コンテキスト:
+  {{context}}
+
+  回答:
