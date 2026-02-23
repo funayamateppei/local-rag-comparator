@@ -3,7 +3,6 @@
 from datetime import datetime
 
 import pytest
-
 from src.domain.models.document import (
     Document,
     DocumentStatus,

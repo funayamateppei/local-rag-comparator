@@ -1,13 +1,13 @@
 """Tests for DocumentProcessorUseCase - document processing pipeline."""
 
-import pytest
-from unittest.mock import AsyncMock, MagicMock, call
+from unittest.mock import AsyncMock, MagicMock
 
-from src.domain.models.document import Document, DocumentStatus
-from src.domain.models.prompt import PromptTemplate, PromptType
-from src.domain.models.graph_data import GraphData, Entity, Relationship
-from src.domain.events import DocumentUploadedEvent
+import pytest
 from src.application.use_cases.document_processor import DocumentProcessorUseCase
+from src.domain.events import DocumentUploadedEvent
+from src.domain.models.document import Document, DocumentStatus
+from src.domain.models.graph_data import GraphData
+from src.domain.models.prompt import PromptTemplate, PromptType
 
 
 @pytest.fixture
@@ -47,7 +47,9 @@ def configured_mocks(mock_dependencies, prompt_template):
     """Set up mock return values for the happy path."""
     mock_dependencies["file_parser"].parse.return_value = "This is the raw text content of the document."
     mock_dependencies["prompt_repo"].load.return_value = prompt_template
-    mock_dependencies["llm_service"].generate.return_value = '{"entities": [{"name": "Test", "type": "concept", "description": "A test entity"}]}'
+    mock_dependencies[
+        "llm_service"
+    ].generate.return_value = '{"entities": [{"name": "Test", "type": "concept", "description": "A test entity"}]}'
     mock_dependencies["embedding_service"].create_embeddings.return_value = [[0.1, 0.2, 0.3]]
     return mock_dependencies
 

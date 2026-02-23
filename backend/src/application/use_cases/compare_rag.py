@@ -2,11 +2,10 @@
 
 import asyncio
 from dataclasses import dataclass, field
-from typing import Optional
 
+from src.application.interfaces import IEmbeddingService, ILLMService
 from src.domain.models.query_result import QueryResult
-from src.domain.repositories import IVectorRepository, IGraphRepository
-from src.application.interfaces import ILLMService, IEmbeddingService
+from src.domain.repositories import IGraphRepository, IVectorRepository
 
 
 @dataclass(frozen=True)
@@ -24,8 +23,8 @@ class ComparisonResult:
     query: str
     vector_results: list[QueryResult] = field(default_factory=list)
     graph_results: list[QueryResult] = field(default_factory=list)
-    vector_error: Optional[str] = None
-    graph_error: Optional[str] = None
+    vector_error: str | None = None
+    graph_error: str | None = None
 
 
 class CompareRAGUseCase:
@@ -67,15 +66,13 @@ class CompareRAGUseCase:
         # Step 2: VectorRAG検索とGraphRAG検索を並列実行
         vector_results: list[QueryResult] = []
         graph_results: list[QueryResult] = []
-        vector_error: Optional[str] = None
-        graph_error: Optional[str] = None
+        vector_error: str | None = None
+        graph_error: str | None = None
 
         async def search_vector() -> None:
             nonlocal vector_results, vector_error
             try:
-                vector_results = await self._vector_repo.search(
-                    query_embedding, top_k=top_k
-                )
+                vector_results = await self._vector_repo.search(query_embedding, top_k=top_k)
             except Exception as e:
                 vector_error = str(e)
 

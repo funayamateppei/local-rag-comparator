@@ -10,10 +10,8 @@ from pathlib import Path
 
 import pytest
 import yaml
-
-from src.domain.models.prompt import PromptTemplate, PromptType
 from src.core.prompt_loader import PromptLoader
-
+from src.domain.models.prompt import PromptTemplate, PromptType
 
 # ---------------------------------------------------------------------------
 # PromptType enum

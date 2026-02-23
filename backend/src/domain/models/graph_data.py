@@ -1,7 +1,6 @@
 """GraphData value objects - represent knowledge graph structures."""
 
 from dataclasses import dataclass, field
-from typing import Optional
 
 
 @dataclass(frozen=True)
@@ -58,7 +57,7 @@ class GraphData:
         """Return the number of relationships in the graph."""
         return len(self.relationships)
 
-    def find_entity(self, name: str) -> Optional[Entity]:
+    def find_entity(self, name: str) -> Entity | None:
         """Find an entity by name.
 
         Args:

@@ -1,10 +1,10 @@
 """Tests for EventDispatcher - concrete implementation of IEventDispatcher."""
 
-import pytest
-from unittest.mock import AsyncMock, MagicMock
+from unittest.mock import AsyncMock
 
-from src.domain.events import DomainEvent, DocumentUploadedEvent
+import pytest
 from src.application.event_dispatcher import EventDispatcher
+from src.domain.events import DocumentUploadedEvent, DomainEvent
 
 
 class TestEventDispatcherRegisterAndDispatch:
