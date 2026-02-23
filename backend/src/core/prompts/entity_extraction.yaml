@@ -1,0 +1,19 @@
+name: entity_extraction
+version: "1.0"
+variables:
+  - text
+  - language
+template: |
+  以下のテキストからエンティティ（人物、場所、組織、概念など）を抽出してください。
+
+  テキスト:
+  {{text}}
+
+  言語: {{language}}
+
+  JSON形式で出力してください:
+  {
+    "entities": [
+      {"name": "エンティティ名", "type": "エンティティタイプ", "description": "説明"}
+    ]
+  }
