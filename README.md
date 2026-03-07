@@ -136,7 +136,7 @@ make down
 | `make test-fe` | フロントエンドのテストを実行 |
 | **リント・フォーマット** | |
 | `make lint` | 全リントを実行（Backend + Frontend） |
-| `make lint-be` | バックエンドのリント（ruff check） |
+| `make lint-be` | バックエンドのリント（ruff check + format --check） |
 | `make lint-fe` | フロントエンドのリント（eslint） |
 | `make format` | 全フォーマットを実行（Backend + Frontend） |
 | `make format-be` | バックエンドのフォーマット（ruff fix + format） |

@@ -97,11 +97,11 @@ graph TB
 
 ### Phase 3: インフラストラクチャ層の実装 (外部結合)
 
-- [ ] 【Red-Green】Infrastructure: FileSystemWatcher / StorageObserver の実装（watchdogを使用し、特定ディレクトリへのファイル配置を検知してEventDispatcherへ通知）
-- [ ] 【Red-Green】LLM-based Parser & Prompt Loader 実装（PyMuPDFで抽出したテキストと外部YAMLプロンプト、qwen2.5を組み合わせた構造化抽出）
-- [ ] 【Red-Green】ChromaDB と通信する IVectorRepository 実装と統合テスト（bge-m3モデルを使用した埋め込み生成）
-- [ ] 【Red-Green】IGraphRepository 実装 (host.docker.internal:11434 を向く settings.yaml 動的生成、CLIラッパー、およびParquet解析)
-- [ ] 【Red-Green】Integration Test: ファイル投入からVector/Graph両DBへのデータ永続化までを網羅するEnd-to-Endパイプラインテスト
+- [x] 【Red-Green】Infrastructure: FileSystemWatcher / StorageObserver の実装（watchdogを使用し、特定ディレクトリへのファイル配置を検知してEventDispatcherへ通知）
+- [x] 【Red-Green】LLM-based Parser & Prompt Loader 実装（PyMuPDFで抽出したテキストと外部YAMLプロンプト、qwen2.5を組み合わせた構造化抽出）
+- [x] 【Red-Green】ChromaDB と通信する IVectorRepository 実装と統合テスト（bge-m3モデルを使用した埋め込み生成）
+- [x] 【Red-Green】IGraphRepository 実装 (host.docker.internal:11434 を向く settings.yaml 動的生成、CLIラッパー、およびParquet解析)
+- [x] 【Red-Green】Integration Test: ファイル投入からVector/Graph両DBへのデータ永続化までを網羅するEnd-to-Endパイプラインテスト
 
 ### Phase 4: インターフェース層 (FastAPI) と Swagger / DI
 
