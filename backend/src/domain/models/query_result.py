@@ -23,10 +23,6 @@ class QueryResult:
 
     def __post_init__(self) -> None:
         if self.rag_type not in ("vector", "graph"):
-            raise ValueError(
-                f"rag_type must be 'vector' or 'graph', got '{self.rag_type}'"
-            )
+            raise ValueError(f"rag_type must be 'vector' or 'graph', got '{self.rag_type}'")
         if not (0.0 <= self.score <= 1.0):
-            raise ValueError(
-                f"score must be between 0.0 and 1.0, got {self.score}"
-            )
+            raise ValueError(f"score must be between 0.0 and 1.0, got {self.score}")

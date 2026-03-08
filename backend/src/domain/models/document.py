@@ -1,10 +1,9 @@
 """Document entity - aggregate root for document processing lifecycle."""
 
+import uuid
 from dataclasses import dataclass, field
 from datetime import datetime
 from enum import Enum
-from typing import Optional
-import uuid
 
 
 class DocumentStatus(Enum):
@@ -49,8 +48,8 @@ class Document:
     status: DocumentStatus = DocumentStatus.UPLOADED
     metadata: dict = field(default_factory=dict)
     created_at: datetime = field(default_factory=datetime.utcnow)
-    parsed_content: Optional[str] = None
-    error: Optional[str] = None
+    parsed_content: str | None = None
+    error: str | None = None
 
     def __post_init__(self) -> None:
         if not self.filename:
@@ -66,9 +65,7 @@ class Document:
             InvalidStateTransitionError: If the transition is not allowed.
         """
         if new_status not in _VALID_TRANSITIONS.get(self.status, set()):
-            raise InvalidStateTransitionError(
-                f"Cannot transition from {self.status.value} to {new_status.value}"
-            )
+            raise InvalidStateTransitionError(f"Cannot transition from {self.status.value} to {new_status.value}")
         self.status = new_status
 
     def start_processing(self) -> None:
@@ -98,8 +95,6 @@ class Document:
             InvalidStateTransitionError: If already in FAILED state.
         """
         if self.status == DocumentStatus.FAILED:
-            raise InvalidStateTransitionError(
-                f"Cannot transition from {self.status.value} to failed"
-            )
+            raise InvalidStateTransitionError(f"Cannot transition from {self.status.value} to failed")
         self.status = DocumentStatus.FAILED
         self.error = error

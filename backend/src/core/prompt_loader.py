@@ -9,7 +9,6 @@ from __future__ import annotations
 from pathlib import Path
 
 import yaml
-
 from src.domain.models.prompt import PromptTemplate, PromptType
 
 
@@ -43,7 +42,7 @@ class PromptLoader:
         if not file_path.exists():
             raise FileNotFoundError(f"Prompt file not found: {file_path}")
 
-        with open(file_path, "r", encoding="utf-8") as f:
+        with open(file_path, encoding="utf-8") as f:
             data = yaml.safe_load(f)
 
         if not isinstance(data, dict):
@@ -52,9 +51,7 @@ class PromptLoader:
         required_fields = ["name", "template", "version"]
         for field_name in required_fields:
             if field_name not in data:
-                raise ValueError(
-                    f"Missing required field '{field_name}' in {file_path}"
-                )
+                raise ValueError(f"Missing required field '{field_name}' in {file_path}")
 
         return PromptTemplate(
             name=data["name"],

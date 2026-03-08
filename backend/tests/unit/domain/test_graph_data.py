@@ -1,7 +1,6 @@
 """Tests for GraphData, Entity, and Relationship value objects."""
 
 import pytest
-
 from src.domain.models.graph_data import Entity, GraphData, Relationship
 
 
@@ -43,9 +42,7 @@ class TestRelationshipCreation:
         assert rel.description == "Python is used by FastAPI framework."
 
     def test_relationship_is_immutable(self):
-        rel = Relationship(
-            source="A", target="B", relation_type="RELATES", description="desc"
-        )
+        rel = Relationship(source="A", target="B", relation_type="RELATES", description="desc")
 
         with pytest.raises(AttributeError):
             rel.source = "C"
@@ -122,9 +119,7 @@ class TestGraphDataFindEntity:
 
     def test_find_entity_returns_matching_entity(self):
         entity_python = Entity(name="Python", type="Language", description="A language")
-        entity_fastapi = Entity(
-            name="FastAPI", type="Framework", description="A framework"
-        )
+        entity_fastapi = Entity(name="FastAPI", type="Framework", description="A framework")
         graph = GraphData(entities=(entity_python, entity_fastapi))
 
         found = graph.find_entity("Python")

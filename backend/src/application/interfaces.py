@@ -1,5 +1,5 @@
 from abc import ABC, abstractmethod
-from typing import Callable, Type
+from collections.abc import Callable
 
 from src.domain.events import DomainEvent
 
@@ -13,7 +13,7 @@ class IEventDispatcher(ABC):
         ...
 
     @abstractmethod
-    def register(self, event_type: Type[DomainEvent], handler: Callable) -> None:
+    def register(self, event_type: type[DomainEvent], handler: Callable) -> None:
         """イベントタイプに対するハンドラを登録する"""
         ...
 

@@ -1,7 +1,7 @@
 NODE_VERSION := $(shell cat .node-version)
 OLLAMA_MODELS  := qwen2.5:14b bge-m3
 
-.PHONY: setup check-ollama build up down test test-be test-fe test-backend logs
+.PHONY: setup check-ollama build up down lint lint-be lint-fe format format-be format-fe test test-be test-fe logs
 
 ## すべての初期セットアップを実行する
 setup: check-ollama
@@ -54,6 +54,28 @@ up: check-ollama
 down:
 	docker compose down
 
+## すべてのリントをローカル環境で実行する
+lint: lint-be lint-fe
+
+## バックエンドのリントを実行する
+lint-be:
+	cd backend && .venv/bin/ruff check src/ tests/
+
+## フロントエンドのリントを実行する
+lint-fe:
+	cd frontend && npm run lint
+
+## すべてのフォーマットをローカル環境で実行する
+format: format-be format-fe
+
+## バックエンドのフォーマットを実行する
+format-be:
+	cd backend && .venv/bin/ruff check --fix src/ tests/ && .venv/bin/ruff format src/ tests/
+
+## フロントエンドのフォーマットを実行する
+format-fe:
+	cd frontend && npx eslint --fix .
+
 ## すべてのテストをローカル環境で実行する (make test / make test-be / make test-fe)
 test: test-be test-fe
 
@@ -64,10 +86,6 @@ test-be:
 ## フロントエンドのテストをローカル環境で実行する
 test-fe:
 	cd frontend && npm test
-
-## バックエンドのテストを Docker 上で実行する
-test-backend:
-	docker compose exec backend pytest tests/ -v
 
 ## 全サービスのログを表示する
 logs:

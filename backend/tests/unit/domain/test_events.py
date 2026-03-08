@@ -3,8 +3,7 @@
 from datetime import datetime
 
 import pytest
-
-from src.domain.events import DomainEvent, DocumentUploadedEvent
+from src.domain.events import DocumentUploadedEvent, DomainEvent
 
 
 class TestDomainEvent:

@@ -1,7 +1,6 @@
 """Tests for QueryResult value object."""
 
 import pytest
-
 from src.domain.models.query_result import QueryResult
 
 
