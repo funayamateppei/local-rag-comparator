@@ -1,7 +1,6 @@
 """ChromaDB-based vector repository implementation."""
 
 import chromadb
-
 from src.domain.models.query_result import QueryResult
 from src.domain.repositories import IVectorRepository
 

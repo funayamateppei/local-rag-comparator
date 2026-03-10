@@ -13,7 +13,6 @@ from src.domain.models.query_result import QueryResult
 from src.domain.repositories import IVectorRepository
 from src.infrastructure.vector_repository import ChromaDBVectorRepository
 
-
 # ---------------------------------------------------------------------------
 # Helpers
 # ---------------------------------------------------------------------------
@@ -176,9 +175,7 @@ class TestChromaDBVectorRepositorySearch:
 
         assert results[0].sources == ("doc-42",)
 
-    async def test_search_with_empty_results(
-        self, repo: ChromaDBVectorRepository, mock_collection: MagicMock
-    ) -> None:
+    async def test_search_with_empty_results(self, repo: ChromaDBVectorRepository, mock_collection: MagicMock) -> None:
         mock_collection.query.return_value = {
             "documents": [[]],
             "distances": [[]],
@@ -189,9 +186,7 @@ class TestChromaDBVectorRepositorySearch:
 
         assert results == []
 
-    async def test_search_with_none_documents(
-        self, repo: ChromaDBVectorRepository, mock_collection: MagicMock
-    ) -> None:
+    async def test_search_with_none_documents(self, repo: ChromaDBVectorRepository, mock_collection: MagicMock) -> None:
         mock_collection.query.return_value = {
             "documents": None,
             "distances": None,
@@ -244,9 +239,7 @@ class TestChromaDBVectorRepositorySearch:
 
         assert results[0].score == 0.0
 
-    async def test_search_multiple_results(
-        self, repo: ChromaDBVectorRepository, mock_collection: MagicMock
-    ) -> None:
+    async def test_search_multiple_results(self, repo: ChromaDBVectorRepository, mock_collection: MagicMock) -> None:
         mock_collection.query.return_value = {
             "documents": [["first", "second", "third"]],
             "distances": [[0.1, 0.3, 0.5]],

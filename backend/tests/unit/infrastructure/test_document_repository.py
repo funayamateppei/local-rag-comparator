@@ -6,11 +6,9 @@ implements IDocumentRepository with in-memory storage.
 
 from __future__ import annotations
 
-import pytest
 from src.domain.models.document import Document
 from src.domain.repositories import IDocumentRepository
 from src.infrastructure.document_repository import InMemoryDocumentRepository
-
 
 # ---------------------------------------------------------------------------
 # Interface compliance

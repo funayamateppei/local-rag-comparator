@@ -5,10 +5,10 @@ External services (Ollama, ChromaDB) are mocked, but all internal wiring
 (use cases, repositories, event dispatcher) uses real implementations.
 """
 
-import pytest
-import yaml
 from unittest.mock import AsyncMock
 
+import pytest
+import yaml
 from src.application.event_dispatcher import EventDispatcher
 from src.application.use_cases.compare_rag import CompareRAGUseCase
 from src.application.use_cases.document_processor import DocumentProcessorUseCase

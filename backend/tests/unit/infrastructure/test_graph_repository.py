@@ -18,7 +18,6 @@ from src.domain.models.query_result import QueryResult
 from src.domain.repositories import IGraphRepository
 from src.infrastructure.graph_repository import GraphRAGRepository
 
-
 # ---------------------------------------------------------------------------
 # Fixtures
 # ---------------------------------------------------------------------------
@@ -183,9 +182,7 @@ class TestGraphRAGRepositoryGetGraphData:
     """Tests for get_graph_data method."""
 
     @pytest.mark.asyncio
-    async def test_returns_correct_entities(
-        self, repo: GraphRAGRepository, sample_graph_data: GraphData
-    ) -> None:
+    async def test_returns_correct_entities(self, repo: GraphRAGRepository, sample_graph_data: GraphData) -> None:
         """get_graph_data should return GraphData with the stored entities."""
         await repo.store_graph("doc1", sample_graph_data)
 
@@ -198,9 +195,7 @@ class TestGraphRAGRepositoryGetGraphData:
         assert result.entities[1].name == "FastAPI"
 
     @pytest.mark.asyncio
-    async def test_returns_correct_relationships(
-        self, repo: GraphRAGRepository, sample_graph_data: GraphData
-    ) -> None:
+    async def test_returns_correct_relationships(self, repo: GraphRAGRepository, sample_graph_data: GraphData) -> None:
         """get_graph_data should return GraphData with the stored relationships."""
         await repo.store_graph("doc1", sample_graph_data)
 
@@ -228,9 +223,7 @@ class TestGraphRAGRepositorySearch:
     """Tests for search method."""
 
     @pytest.mark.asyncio
-    async def test_finds_entity_by_name(
-        self, repo: GraphRAGRepository, sample_graph_data: GraphData
-    ) -> None:
+    async def test_finds_entity_by_name(self, repo: GraphRAGRepository, sample_graph_data: GraphData) -> None:
         """search should find entities whose name matches the query."""
         await repo.store_graph("doc1", sample_graph_data)
 
@@ -240,9 +233,7 @@ class TestGraphRAGRepositorySearch:
         assert any("Python" in r.answer for r in results)
 
     @pytest.mark.asyncio
-    async def test_finds_entity_by_description(
-        self, repo: GraphRAGRepository, sample_graph_data: GraphData
-    ) -> None:
+    async def test_finds_entity_by_description(self, repo: GraphRAGRepository, sample_graph_data: GraphData) -> None:
         """search should find entities whose description contains the query."""
         await repo.store_graph("doc1", sample_graph_data)
 
@@ -303,9 +294,7 @@ class TestGraphRAGRepositorySearch:
         assert results[1].score == 0.7
 
     @pytest.mark.asyncio
-    async def test_search_is_case_insensitive(
-        self, repo: GraphRAGRepository, sample_graph_data: GraphData
-    ) -> None:
+    async def test_search_is_case_insensitive(self, repo: GraphRAGRepository, sample_graph_data: GraphData) -> None:
         """search should be case-insensitive."""
         await repo.store_graph("doc1", sample_graph_data)
 

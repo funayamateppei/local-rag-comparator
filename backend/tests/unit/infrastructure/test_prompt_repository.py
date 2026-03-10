@@ -14,7 +14,6 @@ from src.domain.models.prompt import PromptTemplate, PromptType
 from src.domain.repositories import IPromptRepository
 from src.infrastructure.prompt_repository import PromptRepository
 
-
 # ---------------------------------------------------------------------------
 # Interface compliance
 # ---------------------------------------------------------------------------

@@ -4,10 +4,9 @@ import asyncio
 import logging
 from pathlib import Path
 
+from src.domain.events import FileDetectedEvent
 from watchdog.events import FileCreatedEvent, FileSystemEventHandler
 from watchdog.observers import Observer
-
-from src.domain.events import FileDetectedEvent
 
 logger = logging.getLogger(__name__)
 

@@ -2,12 +2,10 @@
 
 import json
 import logging
-import subprocess
 from pathlib import Path
 
 import pandas as pd
 import yaml
-
 from src.domain.models.graph_data import Entity, GraphData, Relationship
 from src.domain.models.query_result import QueryResult
 from src.domain.repositories import IGraphRepository
@@ -83,8 +81,7 @@ class GraphRAGRepository(IGraphRepository):
         # Store entities as Parquet
         if graph_data.entities:
             entities_data = [
-                {"name": e.name, "type": e.type, "description": e.description}
-                for e in graph_data.entities
+                {"name": e.name, "type": e.type, "description": e.description} for e in graph_data.entities
             ]
             df_entities = pd.DataFrame(entities_data)
             df_entities.to_parquet(doc_dir / "entities.parquet", index=False)
@@ -167,8 +164,7 @@ class GraphRAGRepository(IGraphRepository):
         if entities_path.exists():
             df = pd.read_parquet(entities_path)
             entities = tuple(
-                Entity(name=row["name"], type=row["type"], description=row["description"])
-                for _, row in df.iterrows()
+                Entity(name=row["name"], type=row["type"], description=row["description"]) for _, row in df.iterrows()
             )
 
         relationships_path = doc_dir / "relationships.parquet"

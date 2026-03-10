@@ -3,7 +3,6 @@
 from pathlib import Path
 
 import fitz  # PyMuPDF
-
 from src.application.interfaces import IFileParser
 
 

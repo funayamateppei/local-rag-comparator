@@ -11,6 +11,7 @@ from src.infrastructure.ollama_service import OllamaEmbeddingService, OllamaLLMS
 # Helpers
 # ---------------------------------------------------------------------------
 
+
 def _make_response(json_data: dict, status_code: int = 200) -> MagicMock:
     """Create a mock httpx.Response."""
     response = MagicMock(spec=httpx.Response)
@@ -35,6 +36,7 @@ def _make_error_response(status_code: int = 500) -> MagicMock:
 # ---------------------------------------------------------------------------
 # OllamaLLMService
 # ---------------------------------------------------------------------------
+
 
 class TestOllamaLLMServiceInterface:
     """OllamaLLMService should implement ILLMService."""
@@ -122,6 +124,7 @@ class TestOllamaLLMServiceGenerate:
 # ---------------------------------------------------------------------------
 # OllamaEmbeddingService
 # ---------------------------------------------------------------------------
+
 
 class TestOllamaEmbeddingServiceInterface:
     """OllamaEmbeddingService should implement IEmbeddingService."""
