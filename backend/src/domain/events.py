@@ -27,3 +27,17 @@ class DocumentUploadedEvent(DomainEvent):
 
     document_id: str = ""
     filename: str = ""
+
+
+@dataclass(frozen=True)
+class FileDetectedEvent(DomainEvent):
+    """Event raised when a new file is detected in the watched directory.
+
+    Attributes:
+        file_path: The full path to the detected file.
+        filename: The name of the detected file.
+        occurred_at: Inherited from DomainEvent.
+    """
+
+    file_path: str = ""
+    filename: str = ""
