@@ -1,7 +1,8 @@
 """Tests for PyMuPDFFileParser - concrete implementation of IFileParser."""
 
-import fitz
 import pytest
+
+fitz = pytest.importorskip("fitz", reason="PyMuPDF not installed")
 from src.application.interfaces import IFileParser
 from src.infrastructure.file_parser import PyMuPDFFileParser
 

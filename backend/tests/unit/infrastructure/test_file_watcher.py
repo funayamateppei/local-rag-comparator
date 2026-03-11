@@ -1,9 +1,12 @@
 """Tests for FileSystemWatcher and related components."""
 
+import pytest
+
+pytest.importorskip("watchdog", reason="watchdog not installed")
+
 from datetime import datetime
 from unittest.mock import AsyncMock, MagicMock, patch
 
-import pytest
 from src.domain.events import DomainEvent, FileDetectedEvent
 from src.infrastructure.file_watcher import FileSystemWatcher, _FileCreatedHandler
 

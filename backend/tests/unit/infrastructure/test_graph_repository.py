@@ -7,11 +7,12 @@ entity/relationship search.
 
 from __future__ import annotations
 
+import pytest
+
+pd = pytest.importorskip("pandas", reason="pandas not installed")
+
 import json
 from pathlib import Path
-
-import pandas as pd
-import pytest
 import yaml
 from src.domain.models.graph_data import Entity, GraphData, Relationship
 from src.domain.models.query_result import QueryResult

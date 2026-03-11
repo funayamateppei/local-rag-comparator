@@ -6,9 +6,12 @@ implements IVectorRepository using a mocked ChromaDB client.
 
 from __future__ import annotations
 
+import pytest
+
+pytest.importorskip("chromadb", reason="chromadb not installed")
+
 from unittest.mock import MagicMock, patch
 
-import pytest
 from src.domain.models.query_result import QueryResult
 from src.domain.repositories import IVectorRepository
 from src.infrastructure.vector_repository import ChromaDBVectorRepository
