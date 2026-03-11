@@ -1,10 +1,24 @@
 NODE_VERSION := $(shell cat .node-version)
 OLLAMA_MODELS  := qwen2.5:14b bge-m3
 
-.PHONY: setup check-ollama build up down lint lint-be lint-fe format format-be format-fe test test-be test-fe logs
+.PHONY: setup check-deps check-ollama build up down lint lint-be lint-fe format format-be format-fe test test-be test-fe logs
+
+## 必要な外部ツールの存在とバージョンを確認する
+check-deps:
+	@echo "==> 必要なツールを確認中..."
+	@command -v ollama >/dev/null 2>&1 || { echo "❌ ollama が見つかりません。https://ollama.com からインストールしてください。"; exit 1; }
+	@command -v node >/dev/null 2>&1 || { echo "❌ node が見つかりません。https://nodejs.org からインストールしてください。"; exit 1; }
+	@command -v docker >/dev/null 2>&1 || { echo "❌ docker が見つかりません。https://docs.docker.com/get-docker/ からインストールしてください。"; exit 1; }
+	@ACTUAL_NODE=$$(node -v | sed 's/^v//; s/\..*//'); \
+	EXPECTED_NODE=$$(cat .node-version); \
+	if [ "$$ACTUAL_NODE" != "$$EXPECTED_NODE" ]; then \
+		echo "❌ Node.js メジャーバージョンが一致しません (期待: v$$EXPECTED_NODE.x, 実際: $$(node -v))"; \
+		exit 1; \
+	fi
+	@echo "✅ すべてのツールが確認できました。"
 
 ## すべての初期セットアップを実行する
-setup: check-ollama
+setup: check-deps check-ollama
 	@echo "==> Ollama モデルをダウンロード中..."
 	@for model in $(OLLAMA_MODELS); do \
 		ollama pull $$model; \
