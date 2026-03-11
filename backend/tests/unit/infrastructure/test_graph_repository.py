@@ -11,13 +11,14 @@ import pytest
 
 pd = pytest.importorskip("pandas", reason="pandas not installed")
 
-import json
-from pathlib import Path
-import yaml
-from src.domain.models.graph_data import Entity, GraphData, Relationship
-from src.domain.models.query_result import QueryResult
-from src.domain.repositories import IGraphRepository
-from src.infrastructure.graph_repository import GraphRAGRepository
+import json  # noqa: E402
+from pathlib import Path  # noqa: E402
+
+import yaml  # noqa: E402
+from src.domain.models.graph_data import Entity, GraphData, Relationship  # noqa: E402
+from src.domain.models.query_result import QueryResult  # noqa: E402
+from src.domain.repositories import IGraphRepository  # noqa: E402
+from src.infrastructure.graph_repository import GraphRAGRepository  # noqa: E402
 
 # ---------------------------------------------------------------------------
 # Fixtures
