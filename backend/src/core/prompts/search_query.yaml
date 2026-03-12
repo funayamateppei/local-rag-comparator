@@ -1,14 +1,12 @@
-name: search_query
+name: "search_query"
+template: |
+  以下のクエリに基づいて、関連する情報を検索するための最適化されたクエリを生成してください。
+
+  元のクエリ: {{query}}
+  言語: {{language}}
+
+  最適化されたクエリを返してください。
 version: "1.0"
 variables:
-  - query
-  - context
-template: |
-  以下のコンテキストに基づいて、ユーザーのクエリに回答してください。
-
-  クエリ: {{query}}
-
-  コンテキスト:
-  {{context}}
-
-  回答:
+  - "query"
+  - "language"

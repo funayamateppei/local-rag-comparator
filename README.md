@@ -124,12 +124,23 @@ make down
 
 | コマンド | 説明 |
 |---|---|
+| **セットアップ・起動** | |
 | `make setup` | 初回セットアップ（Ollama Pull + venv + npm install + Docker build） |
 | `make up` | 全コンテナをバックグラウンド起動 |
 | `make down` | 全コンテナを停止 |
 | `make build` | Docker イメージのみビルド |
-| `make test-backend` | バックエンドの pytest を実行 |
 | `make logs` | 全サービスのログをストリーム表示 |
+| **テスト** | |
+| `make test` | 全テストを実行（Backend + Frontend） |
+| `make test-be` | バックエンドの pytest を実行 |
+| `make test-fe` | フロントエンドのテストを実行 |
+| **リント・フォーマット** | |
+| `make lint` | 全リントを実行（Backend + Frontend） |
+| `make lint-be` | バックエンドのリント（ruff check） |
+| `make lint-fe` | フロントエンドのリント（eslint） |
+| `make format` | 全フォーマットを実行（Backend + Frontend） |
+| `make format-be` | バックエンドのフォーマット（ruff fix + format） |
+| `make format-fe` | フロントエンドのフォーマット（eslint --fix） |
 
 ## 📂 ディレクトリ構成
 

@@ -1,12 +1,14 @@
-name: summarization
-version: "1.0"
-variables:
-  - text
-  - max_length
+name: "summarization"
 template: |
-  以下のテキストを{{max_length}}文字以内で要約してください。
+  以下のテキストを要約してください。
 
   テキスト:
   {{text}}
 
-  要約:
+  言語: {{language}}
+
+  簡潔で正確な要約を返してください。
+version: "1.0"
+variables:
+  - "text"
+  - "language"

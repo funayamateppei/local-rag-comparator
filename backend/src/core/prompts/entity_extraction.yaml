@@ -1,19 +1,22 @@
-name: entity_extraction
-version: "1.0"
-variables:
-  - text
-  - language
+name: "entity_extraction"
 template: |
-  以下のテキストからエンティティ（人物、場所、組織、概念など）を抽出してください。
+  以下のテキストからエンティティ（人物、場所、組織、概念など）とそれらの関係性を抽出してください。
 
   テキスト:
   {{text}}
 
   言語: {{language}}
 
-  JSON形式で出力してください:
+  以下のJSON形式で回答してください:
   {
     "entities": [
       {"name": "エンティティ名", "type": "エンティティタイプ", "description": "説明"}
+    ],
+    "relationships": [
+      {"source": "ソースエンティティ", "target": "ターゲットエンティティ", "relation_type": "関係タイプ", "description": "関係の説明"}
     ]
   }
+version: "1.0"
+variables:
+  - "text"
+  - "language"

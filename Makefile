@@ -74,6 +74,7 @@ lint: lint-be lint-fe
 ## バックエンドのリントを実行する
 lint-be:
 	cd backend && .venv/bin/ruff check src/ tests/
+	cd backend && .venv/bin/ruff format --check src/ tests/
 
 ## フロントエンドのリントを実行する
 lint-fe:
