@@ -1,7 +1,7 @@
 NODE_VERSION := $(shell cat .node-version)
 OLLAMA_MODELS  := qwen2.5:14b bge-m3
 
-.PHONY: setup check-deps check-ollama up down dev dev-be dev-fe lint lint-be lint-fe format format-be format-fe test test-be test-fe logs benchmark
+.PHONY: setup check-deps check-ollama up dev dev-be dev-fe lint lint-be lint-fe format format-be format-fe test test-be test-fe logs benchmark
 
 ## 必要な外部ツールの存在とバージョンを確認する
 check-deps:
@@ -63,11 +63,6 @@ up: check-ollama
 	cd backend && .venv/bin/uvicorn src.main:app --host 0.0.0.0 --port 8000 --reload 2>&1 | sed 's/^/💧 /' & \
 	cd frontend && npx vite --host 0.0.0.0 2>&1 | sed 's/^/🔥 /' & \
 	wait
-
-## すべて停止する
-down:
-	docker compose down
-	@echo "✅ 停止完了"
 
 ## Backend のみローカル起動する (フォアグラウンド)
 dev-be: check-ollama
