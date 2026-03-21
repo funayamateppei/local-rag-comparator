@@ -105,11 +105,11 @@ graph TB
 
 ### Phase 4: インターフェース層 (FastAPI) と Swagger / DI
 
-- [ ] Pydantic を用いた Request / Response スキーマの定義（Swaggerに表示されるメタデータやバリデーションを充実させる）
-- [ ] ルーター設定 (/api/upload, /api/query/vector, /api/query/graph) と詳細な docstring の記述
-- [ ] main.py にてDI構成と OpenAPI (Swagger) のタグ設定を行い、FastAPI を起動
-- [ ] `make test-backend` を実行して全テストが通るか確認
-- [ ] ブラウザで `http://localhost:8000/docs` にアクセスし、Swagger UI が正しく生成されているか確認
+- [x] Pydantic を用いた Request / Response スキーマの定義（Swaggerに表示されるメタデータやバリデーションを充実させる）
+- [x] ルーター設定 (/api/upload, /api/query/vector, /api/query/graph) と詳細な docstring の記述
+- [x] main.py にてDI構成と OpenAPI (Swagger) のタグ設定を行い、FastAPI を起動
+- [x] `make test-backend` を実行して全テストが通るか確認
+- [x] ブラウザで `http://localhost:8000/docs` にアクセスし、Swagger UI が正しく生成されているか確認
 
 ### Phase 5: React フロントエンドの開発 (TDD実践)
 
