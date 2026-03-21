@@ -1,7 +1,7 @@
 NODE_VERSION := $(shell cat .node-version)
 OLLAMA_MODELS  := qwen2.5:14b bge-m3
 
-.PHONY: setup check-deps check-ollama up down dev dev-be dev-fe lint lint-be lint-fe format format-be format-fe test test-be test-fe logs
+.PHONY: setup check-deps check-ollama up down dev dev-be dev-fe lint lint-be lint-fe format format-be format-fe test test-be test-fe logs benchmark
 
 ## 必要な外部ツールの存在とバージョンを確認する
 check-deps:
@@ -114,3 +114,7 @@ test-fe:
 ## 全サービスのログを表示する
 logs:
 	docker compose logs -f
+
+## ベンチマークを実行する (Vector RAG vs Graph RAG)
+benchmark:
+	cd backend && .venv/bin/python ../benchmark/run.py --base-url http://localhost:8000

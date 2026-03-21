@@ -1,0 +1,27 @@
+[
+  {
+    "query": "メロスはなぜ激怒したのか？",
+    "category": "factual",
+    "description": "物語冒頭の事実確認"
+  },
+  {
+    "query": "メロスとセリヌンティウスの関係は？",
+    "category": "relationship",
+    "description": "登場人物間の関係性"
+  },
+  {
+    "query": "王がメロスを信じるようになった理由は？",
+    "category": "reasoning",
+    "description": "推論が必要な質問"
+  },
+  {
+    "query": "この物語のテーマは何ですか？",
+    "category": "abstract",
+    "description": "抽象的な理解を問う質問"
+  },
+  {
+    "query": "メロスが走った経路を時系列で説明してください",
+    "category": "sequential",
+    "description": "時系列の理解を問う質問"
+  }
+]

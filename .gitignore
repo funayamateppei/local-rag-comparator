@@ -15,5 +15,8 @@ frontend/node_modules/
 # Docker
 .env
 
+# Benchmark results
+benchmark/results/
+
 # OS
 .DS_Store
