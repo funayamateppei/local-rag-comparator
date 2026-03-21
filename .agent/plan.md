@@ -113,9 +113,9 @@ graph TB
 
 ### Phase 5: React フロントエンドの開発 (TDD実践)
 
-- [ ] 【Red-Green】UIコンポーネント (アップロード、チャット画面) のテストを記述 (React Testing Library)
-- [ ] Vite環境でのUI実装 (API通信先を backend コンテナに設定)
-- [ ] react-force-graph を用いたネットワーク図のレンダリング実装
+- [x] 【Red-Green】UIコンポーネント (アップロード、チャット画面) のテストを記述 (React Testing Library)
+- [x] Vite環境でのUI実装 (API通信先を backend コンテナに設定)
+- [x] react-force-graph を用いたネットワーク図のレンダリング実装
 - [ ] 全体の動作確認 (`make up`)
 
 ### Phase 6: テスト・比較検証と記事執筆

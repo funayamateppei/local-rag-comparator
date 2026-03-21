@@ -1,7 +1,7 @@
 NODE_VERSION := $(shell cat .node-version)
 OLLAMA_MODELS  := qwen2.5:14b bge-m3
 
-.PHONY: setup check-deps check-ollama build up down lint lint-be lint-fe format format-be format-fe test test-be test-fe logs
+.PHONY: setup check-deps check-ollama up down dev dev-be dev-fe lint lint-be lint-fe format format-be format-fe test test-be test-fe logs
 
 ## 必要な外部ツールの存在とバージョンを確認する
 check-deps:
@@ -30,15 +30,12 @@ setup: check-deps check-ollama
 	backend/.venv/bin/pip install -r backend/requirements-dev.txt
 	@echo "==> フロントエンドの依存パッケージをインストール中..."
 	cd frontend && npm install
-	@echo "==> Docker イメージをビルド中..."
-	NODE_VERSION=$(NODE_VERSION) docker compose build
+	@echo "==> ChromaDB イメージを取得中..."
+	docker compose pull
 	@echo ""
 	@echo "✅ セットアップ完了！"
 	@echo ""
-	@echo "  Python venv を有効化するには以下を実行してください："
-	@echo "  source backend/.venv/bin/activate"
-	@echo ""
-	@echo "  コンテナを起動するには："
+	@echo "  起動するには："
 	@echo "  make up"
 
 ## Ollama の起動を確認し、未起動なら自動起動する
@@ -51,22 +48,34 @@ check-ollama:
 	fi
 	@echo "✅ Ollama が起動中です。"
 
-## Docker イメージをビルドする
-build:
-	NODE_VERSION=$(NODE_VERSION) docker compose build
-
-## 全コンテナを起動する
+## ChromaDB + Backend + Frontend をすべて起動する (Ctrl+C で一括停止)
 up: check-ollama
-	NODE_VERSION=$(NODE_VERSION) docker compose up -d
+	@docker compose up -d
 	@echo ""
-	@echo "✅ 起動完了！"
+	@echo "✅ 起動中..."
 	@echo "  Backend:  http://localhost:8000"
 	@echo "  Frontend: http://localhost:5173"
 	@echo "  ChromaDB: http://localhost:8001"
+	@echo ""
+	@echo "  Ctrl+C で全プロセスを停止します"
+	@echo ""
+	@trap 'echo ""; echo "==> 停止中..."; docker compose down; echo "✅ 停止完了"; exit 0' INT TERM; \
+	cd backend && .venv/bin/uvicorn src.main:app --host 0.0.0.0 --port 8000 --reload 2>&1 | sed 's/^/💧 /' & \
+	cd frontend && npx vite --host 0.0.0.0 2>&1 | sed 's/^/🔥 /' & \
+	wait
 
-## 全コンテナを停止する
+## すべて停止する
 down:
 	docker compose down
+	@echo "✅ 停止完了"
+
+## Backend のみローカル起動する (フォアグラウンド)
+dev-be: check-ollama
+	cd backend && .venv/bin/uvicorn src.main:app --host 0.0.0.0 --port 8000 --reload
+
+## Frontend のみローカル起動する (フォアグラウンド)
+dev-fe:
+	cd frontend && npm run dev
 
 ## すべてのリントをローカル環境で実行する
 lint: lint-be lint-fe
